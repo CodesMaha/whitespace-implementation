@@ -9,8 +9,11 @@ def sort_tokens(tokens: Iterable) -> list:
 TOKENS: dict[str, dict[str, str]] = {
     " ": { # imp space
         " ": "push",
+        "\n\n": "pop",
         "\n": "duplicate",
-        "\n\n": "pop"
+        "\t ": "copy",
+        "\t\n": "slide",
+        "\n\t": "swap"
     },
     "\t ": { # imp arithmetic
         "  ": "add",
@@ -18,6 +21,9 @@ TOKENS: dict[str, dict[str, str]] = {
         " \n": "mul",
         "\t ": "floordiv",
         "\t\t": "mod"
+    },
+    "\n": { # imp flow control
+        "\n\n": "exit"
     }
 }
 

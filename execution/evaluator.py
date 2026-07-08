@@ -10,7 +10,7 @@ from typing import Any
 def evaluate_tokens(matched_tokens: Iterable, stack: CallStack) -> Callable | Any:
     """ arg matched_tokens must have at least two items """
     call: Instruction = OPERATIONS[TOKENS[matched_tokens[0]][matched_tokens[1]]]
-    params = [] # to append to
+    params = [] # to append to and extend
 
     if call.stack_access:
         params.append(stack) # current stack instance

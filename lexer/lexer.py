@@ -40,6 +40,4 @@ class Lexer:
         # store rest of inp if parameter present
         matched_tokens.append(self._inp[self.pos:])
 
-        print(f"tokens:{matched_tokens}") # DEBUGGING
-
         return matched_tokens

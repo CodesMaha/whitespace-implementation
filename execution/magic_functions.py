@@ -1,10 +1,10 @@
 """ called with tokens inputted """
 
 from errors.lexer import NumberError
-from execution.stack import CallStack
 
 from re import sub as substitute, match
 from operator import add, sub, mul, floordiv, mod
+from sys import exit
 
 class Number:
     def __init__(self, gvn_number):

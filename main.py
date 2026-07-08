@@ -11,7 +11,7 @@ l = Lexer()
 s = CallStack()
 
 # main loop
-while inp != "exit":
+while True:
     inp = input("$ ")
     l.inp = inp
     print(f"{evaluate_tokens(l.analyze(), s)}")

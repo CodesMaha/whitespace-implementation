@@ -2,6 +2,7 @@
 
 from typing import Any
 from errors.stack import EmptyStackError, ZeroPopError
+from execution.magic_functions import Number
 
 class Node:
     """ single node for function call """
@@ -19,14 +20,7 @@ class CallStack:
         """ check if stack is empty """
         return self.size == 0
     
-    def duplicate(self) -> str:
-        """ duplicate top of stack """
-        if self.is_empty():
-            raise EmptyStackError(f"No top call to duplicate. Current stack size: {self.size}.")
-        self.push(self.head.value)
-        return f"duplicated {self.head.value}" # info msg
-    
-    def push(self, value: Any) -> str:
+    def push(self, value: Number) -> str:
         """ push to stack then return pushed """
         node = Node(value)
         if self.head: # not None
@@ -56,3 +50,36 @@ class CallStack:
         if (len(popped_nodes) == 1) and (not internal):
             return f"popped {popped_nodes[0]}" # info msg
         return popped_nodes
+    
+    def duplicate(self) -> str:
+        """ duplicate top of stack """
+        if self.is_empty():
+            raise EmptyStackError(f"No top call to duplicate. Current stack size: {self.size}.")
+        self.push(self.head.value)
+        return f"duplicated {self.head.value}" # info msg
+    
+    def copy(self, n: Number) -> str:
+        """ copy nth item to top of stack, where n=0 is top (zero-indexed) """
+        current_head = self.head # top of stack, or item zero
+        for _ in range(n):
+            if self.head.next == None:
+                raise EmptyStackError(f"No stack item {n} to copy to top.")
+            current_head = self.head.next
+        self.push(current_head.value)
+        return f"copied {current_head.value}"
+    
+    def slide(self) -> str:
+        """ keep only top of stack """
+        self.head.next = None
+        self.size = 1
+        return f"slided all except {self.head.value} off"
+
+    def swap(self) -> str:
+        """ swap top item of stack with next item """
+        first_node: Node = self.head
+        second_node: Node = self.head.next
+
+        self.head = second_node
+        self.head.next = first_node
+
+        return f"swapped from {first_node.value} to {second_node.value}"
