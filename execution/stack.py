@@ -2,7 +2,6 @@
 
 from typing import Any
 from errors.stack import EmptyStackError, ZeroPopError
-from execution.magic_functions import Number
 
 class Node:
     """ single node for function call """
@@ -20,7 +19,16 @@ class CallStack:
         """ check if stack is empty """
         return self.size == 0
     
-    def push(self, value: Number) -> str:
+    def peek(self, n=0) -> Node:
+        """ retrieve specific Node. zero-indexed, where n=0 is top Node """
+        current_head = self.head
+        for _ in range(n):
+            if self.head.next == None:
+                raise EmptyStackError(f"Cannot access stack item {n}.")
+            current_head = current_head.next
+        return current_head
+    
+    def push(self, value: int) -> str:
         """ push to stack then return pushed """
         node = Node(value)
         if self.head: # not None
@@ -58,21 +66,25 @@ class CallStack:
         self.push(self.head.value)
         return f"duplicated {self.head.value}" # info msg
     
-    def copy(self, n: Number) -> str:
-        """ copy nth item to top of stack, where n=0 is top (zero-indexed) """
-        current_head = self.head # top of stack, or item zero
-        for _ in range(n):
-            if self.head.next == None:
-                raise EmptyStackError(f"No stack item {n} to copy to top.")
-            current_head = self.head.next
-        self.push(current_head.value)
-        return f"copied {current_head.value}"
+    def copy(self, n: int) -> str:
+        """ copy nth item to top of stack, where n is zero-indexed """
+        to_copy = self.peek(n)
+        self.push(to_copy.value)
+        return f"copied {to_copy.value}"
     
-    def slide(self) -> str:
-        """ keep only top of stack """
-        self.head.next = None
-        self.size = 1
-        return f"slided all except {self.head.value} off"
+    def slide(self, n: int) -> str:
+        """ keep only top of stack. discard n after, where n > 0 """
+        if self.is_empty():
+            raise EmptyStackError(f"Cannot slide {n} items after top of stack if top does not exist.")
+        elif self.size == 1:
+            return "no items to slide off"
+        elif n == 0: # TODO: does this error?
+            return "cannot slide zero items"
+        
+        slide_end = self.peek(n+1) # after n items
+        self.head.next = slide_end
+        self.size -= n
+        return f"slided {n} items until {slide_end.value}"
 
     def swap(self) -> str:
         """ swap top item of stack with next item """

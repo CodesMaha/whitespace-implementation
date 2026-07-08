@@ -23,7 +23,7 @@ OPERATIONS: dict[str, Instruction] = {
     "pop": Instruction(CallStack.pop, stack_access=True),
     "duplicate": Instruction(CallStack.duplicate, stack_access=True),
     "copy": Instruction(CallStack.copy, 0, f.Number, True),
-    "slide": Instruction(CallStack.slide, stack_access=True),
+    "slide": Instruction(CallStack.slide, 0, f.Number, stack_access=True),
     "swap": Instruction(CallStack.swap, stack_access=True),
     "add": Instruction(f.add, 2),
     "sub": Instruction(f.sub, 2),

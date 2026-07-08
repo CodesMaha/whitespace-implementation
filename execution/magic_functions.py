@@ -7,7 +7,7 @@ from operator import add, sub, mul, floordiv, mod
 from sys import exit
 
 class Number:
-    def __init__(self, gvn_number):
+    def __init__(self, gvn_number: str):
         self.pattern = r"[ \t]+\n" # this newline has to be removed
         self._number: str | int = gvn_number
     
