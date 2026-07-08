@@ -22,11 +22,24 @@ class CallStack:
     def peek(self, n=0) -> Node:
         """ retrieve specific Node. zero-indexed, where n=0 is top Node """
         current_head = self.head
-        for _ in range(n):
-            if self.head.next == None:
+        for _ in range(n): # will not run if zero
+            if current_head.next == None:
                 raise EmptyStackError(f"Cannot access stack item {n}.")
             current_head = current_head.next
         return current_head
+    
+    def peek_many(self, n: int) -> list[Any]:
+        """ internal. retrieving list of Node.value until stack item n """
+        peeked_nodes: list[Any] = [] # to append to
+
+        current_node: Node = self.head
+        for _ in range(n): # will not run at zero
+            if current_node == None:
+                raise EmptyStackError(f"Cannot access stack item {n}. Current stack size: {self.size}")
+            peeked_nodes.append(current_node.value)
+            current_node = current_node.next
+
+        return peeked_nodes
     
     def push(self, value: int) -> str:
         """ push to stack then return pushed """
@@ -37,40 +50,33 @@ class CallStack:
         self.size += 1 # increase stack count
         return f"pushed {self.head.value}" # info msg
     
-    def pop(self, amount=1, internal=False) -> list[Any] | str:
+    def pop(self) -> list[Any] | str:
         """ 
         pop top of stack then return popped.
         arg amount should be above zero.
         arg internal False if externally called
         """
-        popped_nodes: list[Any] = [] # to append to
+        if self.is_empty():
+            raise EmptyStackError(f"Cannot pop top item. Current stack size: {self.size}.")
+        
+        popped_node = self.head.value # top call
+        self.head = self.head.next # next call
+        self.size -= 1
 
-        if amount <= 0:
-            raise ZeroPopError
-
-        while len(popped_nodes) < amount:
-            if self.is_empty():
-                raise EmptyStackError(f"Cannot pop {amount} time(s). Current stack size: {self.size}.")
-            popped_nodes.append(self.head.value) # top call
-            self.head = self.head.next # next call
-            self.size -= 1
-
-        if (len(popped_nodes) == 1) and (not internal):
-            return f"popped {popped_nodes[0]}" # info msg
-        return popped_nodes
+        return f"popped {popped_node}" # info msg
     
     def duplicate(self) -> str:
         """ duplicate top of stack """
         if self.is_empty():
             raise EmptyStackError(f"No top call to duplicate. Current stack size: {self.size}.")
-        self.push(self.head.value)
+        self.push(self.head.value) # also handles self.size+=1
         return f"duplicated {self.head.value}" # info msg
     
     def copy(self, n: int) -> str:
         """ copy nth item to top of stack, where n is zero-indexed """
         to_copy = self.peek(n)
         self.push(to_copy.value)
-        return f"copied {to_copy.value}"
+        return f"copied {to_copy.value}" # info msg
     
     def slide(self, n: int) -> str:
         """ keep only top of stack. discard n after, where n > 0 """

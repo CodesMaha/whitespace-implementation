@@ -17,7 +17,7 @@ def evaluate_tokens(matched_tokens: Iterable, stack: CallStack) -> Callable | An
     if call.operand_type:
         params.append(call.operand_type(matched_tokens[2]).value)
     elif call.operand_amt: # items to pop from stack
-        params.extend(stack.pop(call.operand_amt, True))
+        params.extend(stack.peek_many(call.operand_amt))
     
     if params:
         return call.operator(*params)
