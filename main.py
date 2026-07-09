@@ -2,17 +2,29 @@ from lexer.lexer import Lexer
 from execution.stack import CallStack
 from execution.evaluator import evaluate_tokens
 
-print("WHITESPACE")
+from sys import stdin
+
+print("WHITESPACE") # title
 
 # initialize
-inp = ""
 l = Lexer()
 
 s = CallStack()
 
 # main loop
 while True:
-    # TODO: read multiple lines
-    inp = input("$ ")
-    l.inp = inp
+    
+    inp_lines = []
+    print("$", end=" ") # symbol for accepting inp
+
+    # loop for multiline inp
+    while True:
+        inp_line = stdin.readline()
+        # check for sentinel value or eof condition
+        if inp_line in ["", "-1\n"]:
+            break 
+
+        inp_lines.append(inp_line)
+
+    l.inp = "".join(inp_lines)
     print(f"{evaluate_tokens(l.analyze(), s)}")
