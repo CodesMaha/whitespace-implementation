@@ -12,6 +12,7 @@ s = CallStack()
 
 # main loop
 while True:
+    # TODO: read multiple lines
     inp = input("$ ")
     l.inp = inp
     print(f"{evaluate_tokens(l.analyze(), s)}")

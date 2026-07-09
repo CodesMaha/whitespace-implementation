@@ -1,6 +1,11 @@
 This is an implementation of the esoteric programming language [Whitespace](https://en.wikipedia.org/wiki/Whitespace_(programming_language)).
 
-Basic arithmetic supported so far.
+For convenience, use:
+* `\20` for space;
+* `\t` for tab;
+* `\n` for newline.
+
+Only basic arithmetic supported so far.
 
 ---
 

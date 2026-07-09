@@ -15,7 +15,9 @@ class Lexer:
         return self._inp
     @inp.setter
     def inp(self, new_inp: str) -> None:
-        self._inp = sub(r"[^ \t\n]", "", new_inp.encode("latin1").decode("unicode_escape"))
+        # keep backslash and add \20 for convenience
+        self._inp = new_inp.encode("latin1").decode("unicode_escape").replace("\20", " ")
+        self._inp = sub(r"[^ \t\n]", "", self._inp) # keep only spaces, tabs, and newlines
 
     def analyze(self) -> list[str]:
         """ tokenize input then return matched_tokens """
