@@ -1,7 +1,13 @@
 """ map tokens to functions """
 
-import execution.magic_functions as f
+# import statements
+# parameter types
+import lexer.custom_types as type
+
+# operations
 from execution.stack import CallStack
+from operator import add, sub, mul, floordiv, mod
+from sys import exit
 
 from dataclasses import dataclass
 from collections.abc import Callable, Iterable
@@ -19,16 +25,16 @@ def sort_tokens(tokens: Iterable) -> list:
     return sorted(tokens, key=len, reverse=True)
 
 OPERATIONS: dict[str, Instruction] = {
-    "push": Instruction(CallStack.push, 0, f.Number, True),
+    "push": Instruction(CallStack.push, 0, type.Number, True),
     "pop": Instruction(CallStack.pop, stack_access=True),
     "duplicate": Instruction(CallStack.duplicate, stack_access=True),
-    "copy": Instruction(CallStack.copy, 0, f.Number, True),
-    "slide": Instruction(CallStack.slide, 0, f.Number, stack_access=True),
+    "copy": Instruction(CallStack.copy, 0, type.Number, True),
+    "slide": Instruction(CallStack.slide, 0, type.Number, stack_access=True),
     "swap": Instruction(CallStack.swap, stack_access=True),
-    "add": Instruction(f.add, 2),
-    "sub": Instruction(f.sub, 2),
-    "mul": Instruction(f.mul, 2),
-    "floordiv": Instruction(f.floordiv, 2),
-    "mod": Instruction(f.mod, 2),
-    "exit": Instruction(f.exit)
+    "add": Instruction(add, 2),
+    "sub": Instruction(sub, 2),
+    "mul": Instruction(mul, 2),
+    "floordiv": Instruction(floordiv, 2),
+    "mod": Instruction(mod, 2),
+    "exit": Instruction(exit)
 }

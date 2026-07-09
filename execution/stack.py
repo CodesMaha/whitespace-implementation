@@ -43,7 +43,7 @@ class CallStack:
         current_node = self.head
         for _ in range(n): # will not run at zero
             if current_node is None:
-                raise MissingStackError(f"Cannot access stack item {n}. Current stack size: {self.size}")
+                raise MissingStackError(f"Cannot access stack item {n}. Current stack size: {self.size}.")
             peeked_nodes.append(current_node.value)
             current_node = current_node.next
 
@@ -99,7 +99,7 @@ class CallStack:
         
         # self.size counts from idx 1 and includes top, so -2
         if n > self.size-2:
-            raise MissingStackError(f"Cannot slide off top item or before. Current stack size: {self.size}")
+            raise MissingStackError(f"Cannot slide off top item or before. Current stack size: {self.size}.")
         elif n == self.size-2:
             self.head.next = None
             self.size = 1

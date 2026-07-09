@@ -29,8 +29,8 @@ class Lexer:
 
         try:
             m = match(OP_PATTERNS[matched_tokens[0]], self._inp[self.pos:])
-        except KeyError:
-            raise EmptySyntaxError(f"Unrecognized IMP used: {matched_tokens[0]!r}.")
+        except KeyError as exc:
+            raise EmptySyntaxError(f"Unrecognized IMP used: {matched_tokens[0]!r}.") from exc
         
         if not m:
             raise EmptySyntaxError
