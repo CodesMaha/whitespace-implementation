@@ -26,5 +26,5 @@ while True:
 
         inp_lines.append(inp_line)
 
-    l.inp = "".join(inp_lines)
+    l.inp = "".join(inp_lines)[:-1] # remove trailing newline
     print(f"{evaluate_tokens(l.analyze(), s)}")
