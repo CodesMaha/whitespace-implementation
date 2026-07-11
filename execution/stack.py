@@ -21,20 +21,39 @@ class CallStack:
     
     def peek_node(self, n=0) -> Node:
         """ internal and zero-indexed. retrieve specific Node """
-        current_head: Node | None = self.head
+        current_node: Node | None = self.head
 
-        if current_head is None:
+        if current_node is None:
             raise EmptyStackError("No top calls or calls after to peek.")
         
         for _ in range(n): # will not run if zero
-            if current_head.next is None:
+            if current_node.next is None:
                 raise MissingStackError(f"Cannot access stack item {n}.")
-            current_head = current_head.next
-        return current_head
+            current_node = current_node.next
+        return current_node
     
     def peek(self) -> Any:
         """ external and only for top call """
         return self.peek_node(0).value
+    
+    def peek_all(self) -> list:
+        """ 
+        internal. can be used for testing and printing all current calls
+        Node.value -> Node.value where None is excluded
+        """
+        current_node: None | Node = self.head
+        
+        peeked_vals: list = [] # to append to
+        while current_node is not None:
+            peeked_vals.append(current_node.value)
+            current_node = current_node.next
+
+        return peeked_vals # empty list if top is None
+    
+    def push_many(self, values: list[int]) -> None:
+        """ internal. also can be for testing. just call .push in loop """
+        for value in values:
+            self.push(value)
     
     def push(self, value: int) -> str:
         """ push to stack then return pushed. accepts from Number """
@@ -51,18 +70,12 @@ class CallStack:
         retrieving list of Node.value until stack item n.
         can be used for function parameters 
         """
-        popped_vals: list[Any] = [] # to append to
-
-        if n <= 0:
+        if (n <= 0) or (self.is_empty()):
             raise PopZeroError
         
+        popped_vals: list[Any] = [] # to append to
         while len(popped_vals) < n:
-            if self.is_empty():
-                raise PopZeroError
-        
-        current_node = self.head
-        for _ in range(n): # will not run at zero
-            if current_node is None:
+            if self.head is None:
                 raise PopZeroError(f"Cannot access stack item {n}. Current stack size: {self.size}.")
             popped_vals.append(self.head.value) # top call
             self.head = self.head.next # next call
@@ -77,8 +90,6 @@ class CallStack:
         arg internal False if externally called
         """
         popped_node = self.pop_many(1)[0]
-        self.size -= 1
-
         return f"popped {popped_node}" # info msg
     
     def duplicate(self) -> str:
@@ -90,7 +101,7 @@ class CallStack:
     
     def copy(self, n: int) -> str:
         """ copy nth item to top of stack, where n is zero-indexed """
-        to_copy: Node = self.peek(n)
+        to_copy: Node = self.peek_node(n)
         self.push(to_copy.value)
         return f"copied {to_copy.value}" # info msg
     

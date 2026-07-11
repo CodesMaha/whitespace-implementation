@@ -2,7 +2,7 @@
 
 from errors.lexer import NumberError, CharacterError
 
-from re import sub as fullmatch
+from re import fullmatch
 
 NUMBER_PATTERN = r"^[ \t]+\n$" # for numbers
 LIMIT_7BIT = 127 # for 7-bit ascii characters
