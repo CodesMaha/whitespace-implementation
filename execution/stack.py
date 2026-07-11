@@ -1,7 +1,7 @@
 """ stack (linked list) of functions that are to be called """
 
 from typing import Any
-from errors.stack import EmptyStackError, MissingStackError
+from errors.stack import EmptyStackError, MissingStackError, PopZeroError
 
 class Node:
     """ single node for function call """
@@ -36,23 +36,6 @@ class CallStack:
         """ external and only for top call """
         return self.peek_node(0).value
     
-    def peek_many(self, n: int) -> list[Any]:
-        """ 
-        internal and one-indexed. 
-        retrieving list of Node.value until stack item n.
-        can be used for function parameters 
-        """
-        peeked_nodes: list[Any] = [] # to append to
-        
-        current_node = self.head
-        for _ in range(n): # will not run at zero
-            if current_node is None:
-                raise MissingStackError(f"Cannot access stack item {n}. Current stack size: {self.size}.")
-            peeked_nodes.append(current_node.value)
-            current_node = current_node.next
-
-        return peeked_nodes
-    
     def push(self, value: int) -> str:
         """ push to stack then return pushed. accepts from Number """
         node = Node(value)
@@ -62,17 +45,38 @@ class CallStack:
         self.size += 1 # increase stack count
         return f"pushed {self.head.value}" # info msg
     
+    def pop_many(self, n: int) -> list[Any]:
+        """ 
+        internal and one-indexed. 
+        retrieving list of Node.value until stack item n.
+        can be used for function parameters 
+        """
+        popped_vals: list[Any] = [] # to append to
+
+        if n <= 0:
+            raise PopZeroError
+        
+        while len(popped_vals) < n:
+            if self.is_empty():
+                raise PopZeroError
+        
+        current_node = self.head
+        for _ in range(n): # will not run at zero
+            if current_node is None:
+                raise PopZeroError(f"Cannot access stack item {n}. Current stack size: {self.size}.")
+            popped_vals.append(self.head.value) # top call
+            self.head = self.head.next # next call
+            self.size -= 1
+
+        return popped_vals
+    
     def pop(self) -> str:
         """ 
         pop top of stack then return popped.
         arg amount should be above zero.
         arg internal False if externally called
         """
-        if self.is_empty():
-            raise EmptyStackError(f"Cannot pop top item. Current stack size: {self.size}.")
-        
-        popped_node = self.head.value # top call
-        self.head = self.head.next # next call
+        popped_node = self.pop_many(1)[0]
         self.size -= 1
 
         return f"popped {popped_node}" # info msg
@@ -86,7 +90,7 @@ class CallStack:
     
     def copy(self, n: int) -> str:
         """ copy nth item to top of stack, where n is zero-indexed """
-        to_copy = self.peek(n)
+        to_copy: Node = self.peek(n)
         self.push(to_copy.value)
         return f"copied {to_copy.value}" # info msg
     
@@ -110,7 +114,7 @@ class CallStack:
             return "slid off all"
         
         # if self.peek is zero-indexed then zero is top, so +1
-        slide_end = self.peek(n+1) # after n items
+        slide_end: Node = self.peek_node(n+1) # after n items
         self.head.next = slide_end.next # keep n.next
         self.size -= n + 1
         return f"slid {n} items"

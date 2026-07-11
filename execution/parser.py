@@ -37,7 +37,7 @@ OPERATIONS: dict[str, Instruction] = {
     "mul": Instruction(mul, 2),
     "floordiv": Instruction(floordiv, 2),
     "mod": Instruction(mod, 2),
-    "output number": Instruction(CallStack.peek, stack_access=True),
-    "output character": Instruction(CallStack.peek, stack_access=True, return_type=type.to_character),
+    "output number": Instruction(CallStack.pop, stack_access=True),
+    "output character": Instruction(CallStack.pop, stack_access=True, return_type=type.to_character),
     "exit": Instruction(exit)
 }
