@@ -83,14 +83,14 @@ class CallStack:
 
         return popped_vals
     
-    def pop(self) -> str:
-        """ 
-        pop top of stack then return popped.
-        arg amount should be above zero.
-        arg internal False if externally called
-        """
+    def pop_one(self) -> Any:
+        """ internal where return type is the value itself """
         popped_node = self.pop_many(1)[0]
-        return f"popped {popped_node}" # info msg
+        return popped_node
+    
+    def pop(self) -> str:
+        """ .pop_one with message """
+        return f"popped {self.pop_one()}" # info msg
     
     def duplicate(self) -> str:
         """ duplicate top of stack """

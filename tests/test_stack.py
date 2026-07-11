@@ -1,7 +1,7 @@
-import unittest
+from unittest import TestCase
 from execution.stack import CallStack
 
-class StackManipulation(unittest.TestCase):
+class TestStackManipulation(TestCase):
     """ test stack manipulation imp such as for push """
     # these are sample values. they can change but should be consistent
     VAL: int = 65 # capital a for testing, but can be any int
@@ -29,13 +29,13 @@ class StackManipulation(unittest.TestCase):
         self.s.copy(1)
         self.assertEqual(self.s.peek_all(), self.VALS)
 
+    def test_swap(self):
+        self.s.push_many(self.VALS[:2])
+        self.s.swap()
+        self.assertEqual(self.s.peek_all(), self.VALS[:2])
+
     def test_slide(self):
         self.s.push_many(self.VALS)
         # sub one for zero-indexed and one for top
         self.s.slide(len(self.VALS)-2)
         self.assertEqual(self.s.peek_all(), [self.VAL])
-
-    def test_swap(self):
-        self.s.push_many(self.VALS[:2])
-        self.s.swap()
-        self.assertEqual(self.s.peek_all(), self.VALS[:2])
