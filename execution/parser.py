@@ -2,7 +2,7 @@
 
 # import statements
 # parameter types
-import lexer.custom_types as type
+import lexer.to_type as type
 
 # operations
 from execution.stack import CallStack
@@ -26,11 +26,11 @@ def sort_tokens(tokens: Iterable) -> list:
     return sorted(tokens, key=len, reverse=True)
 
 OPERATIONS: dict[str, Instruction] = {
-    "push": Instruction(CallStack.push, stack_access=True, parameter_type=type.Number),
+    "push": Instruction(CallStack.push, stack_access=True, parameter_type=type.to_number),
     "pop": Instruction(CallStack.pop, stack_access=True),
     "duplicate": Instruction(CallStack.duplicate, stack_access=True),
-    "copy": Instruction(CallStack.copy, stack_access=True, parameter_type=type.Number),
-    "slide": Instruction(CallStack.slide, stack_access=True, parameter_type=type.Number),
+    "copy": Instruction(CallStack.copy, stack_access=True, parameter_type=type.to_number),
+    "slide": Instruction(CallStack.slide, stack_access=True, parameter_type=type.to_number),
     "swap": Instruction(CallStack.swap, stack_access=True),
     "add": Instruction(add, 2),
     "sub": Instruction(sub, 2),
@@ -38,6 +38,6 @@ OPERATIONS: dict[str, Instruction] = {
     "floordiv": Instruction(floordiv, 2),
     "mod": Instruction(mod, 2),
     "output number": Instruction(CallStack.peek, stack_access=True),
-    "output character": Instruction(CallStack.peek, stack_access=True, return_type=type.Character),
+    "output character": Instruction(CallStack.peek, stack_access=True, return_type=type.to_character),
     "exit": Instruction(exit)
 }
