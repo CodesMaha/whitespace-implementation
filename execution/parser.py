@@ -16,9 +16,10 @@ from typing import Any
 @dataclass
 class Instruction:
     operator: Callable 
-    parameter_amt: int = 0 # how many stack items to peek, or
+    parameter_amt: int = 0 # how many stack items to pop
     parameter_type: Any = None
     return_type: Any = None
+    store_return: bool = False # push to stack
     stack_access: bool = False # if access to stack (one more param)
 
 def sort_tokens(tokens: Iterable) -> list:
@@ -32,11 +33,11 @@ OPERATIONS: dict[str, Instruction] = {
     "copy": Instruction(CallStack.copy, stack_access=True, parameter_type=type.to_number),
     "slide": Instruction(CallStack.slide, stack_access=True, parameter_type=type.to_number),
     "swap": Instruction(CallStack.swap, stack_access=True),
-    "add": Instruction(add, 2),
-    "sub": Instruction(sub, 2),
-    "mul": Instruction(mul, 2),
-    "floordiv": Instruction(floordiv, 2),
-    "mod": Instruction(mod, 2),
+    "add": Instruction(add, 2, store_return=True),
+    "sub": Instruction(sub, 2, store_return=True),
+    "mul": Instruction(mul, 2, store_return=True),
+    "floordiv": Instruction(floordiv, 2, store_return=True),
+    "mod": Instruction(mod, 2, store_return=True),
     "output number": Instruction(CallStack.pop_one, stack_access=True),
     "output character": Instruction(CallStack.pop_one, stack_access=True, return_type=type.to_character),
     "exit": Instruction(exit)
