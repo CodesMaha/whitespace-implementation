@@ -8,8 +8,8 @@ print("WHITESPACE") # title
 
 # initialize
 l = Lexer()
-
 s = CallStack()
+SENTINEL = "-1\n"
 
 # main loop
 while True:
@@ -21,7 +21,7 @@ while True:
     while True:
         inp_line = stdin.readline()
         # check for sentinel value or eof condition
-        if inp_line in ["", "-1\n"]:
+        if inp_line in ["", SENTINEL]:
             break 
 
         inp_lines.append(inp_line)

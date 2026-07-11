@@ -22,6 +22,10 @@ TOKENS: dict[str, dict[str, str]] = {
         "\t ": "floordiv",
         "\t\t": "mod"
     },
+    "\t\n": { # imp input/output
+        " \t": "output number",
+        "  ": "output character",
+    },
     "\n": { # imp flow control
         "\n\n": "exit"
     }

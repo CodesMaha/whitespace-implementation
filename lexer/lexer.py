@@ -7,7 +7,7 @@ from re import sub, match
 
 class Lexer:
     def __init__(self):
-        self._inp: str = "" # initialize
+        self.inp = ""
         self.pos: int = 0
 
     @property

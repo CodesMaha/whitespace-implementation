@@ -19,8 +19,8 @@ class CallStack:
         """ check if stack is empty """
         return self.size == 0
     
-    def peek(self, n=0) -> Node:
-        """ retrieve specific Node. zero-indexed """
+    def peek_node(self, n=0) -> Node:
+        """ internal and zero-indexed. retrieve specific Node """
         current_head: Node | None = self.head
 
         if current_head is None:
@@ -31,6 +31,10 @@ class CallStack:
                 raise MissingStackError(f"Cannot access stack item {n}.")
             current_head = current_head.next
         return current_head
+    
+    def peek(self) -> Any:
+        """ external and only for top call """
+        return self.peek_node(0).value
     
     def peek_many(self, n: int) -> list[Any]:
         """ 

@@ -35,19 +35,17 @@ class Number:
 class Character:
     limit_7bit = 127 # 7-bit ascii
 
-    def __init__(self, ascii_code: str):
-        self._character: str = ascii_code
+    def __init__(self, ascii_code: int):
+        self._character: int = ascii_code
     
     @property
     def value(self): 
-        character = Number(self._character).value
-
         # ensure clamping to range from 0 to self.limit_7b
-        if self.limit_7bit < character < 0:
+        if self.limit_7bit < self._character < 0:
             raise CharacterError(f"Character can only be converted from an ASCII code. Number inputted: {self._character}.")
         
-        return ascii(character)
+        return chr(self._character)
     
     @value.setter
-    def value(self, new_ascii_code: str):
+    def value(self, new_ascii_code: int):
         self._character = new_ascii_code

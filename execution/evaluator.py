@@ -14,12 +14,15 @@ def evaluate_tokens(matched_tokens: Iterable, stack: CallStack) -> Callable | An
 
     if call.stack_access:
         params.append(stack) # current stack instance
-    if call.operand_type:
-        params.append(call.operand_type(matched_tokens[2]).value)
-    elif call.operand_amt: # items to pop from stack
-        params.extend(stack.peek_many(call.operand_amt))
+    if (matched_tokens[2]) and (call.parameter_type): # accept parameter
+        params.append(call.parameter_type(matched_tokens[2]).value)
+    if call.parameter_amt: # items to peek from stack
+        params.extend(stack.peek_many(call.parameter_amt))
     
-    if params:
+    if (params) and (call.return_type):
+        return call.return_type(call.operator(*params)).value # convert here
+    
+    elif params:
         return call.operator(*params)
     else:
         return call.operator()
