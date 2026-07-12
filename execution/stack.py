@@ -1,4 +1,4 @@
-""" stack (linked list) of functions that are to be called """
+""" stack (linked list) of information related to function calls """
 
 from typing import Any
 from errors.stack import EmptyStackError, MissingStackError, PopZeroError

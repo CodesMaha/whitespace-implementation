@@ -10,7 +10,7 @@ from operator import add, sub, mul, floordiv, mod
 from sys import exit
 
 from dataclasses import dataclass
-from collections.abc import Callable, Iterable
+from collections.abc import Callable
 from typing import Any
 
 @dataclass
@@ -21,10 +21,6 @@ class Instruction:
     return_type: Any = None
     store_return: bool = False # push to stack
     stack_access: bool = False # if access to stack (one more param)
-
-def sort_tokens(tokens: Iterable) -> list:
-    """ sort appropriately since re goes with shortest """
-    return sorted(tokens, key=len, reverse=True)
 
 OPERATIONS: dict[str, Instruction] = {
     "push": Instruction(CallStack.push, stack_access=True, parameter_type=type.to_number),
