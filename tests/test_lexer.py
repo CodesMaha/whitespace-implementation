@@ -3,6 +3,8 @@ from lexer.tokenizer import Tokenizer
 from errors.lexer import MissingSyntaxError
 
 class TestLexer(TestCase):
+    """ test converter for syntax to tokens and numbers """
+    
     ONLY_IMP = "\\32"
     INSTRUCTION = f"{ONLY_IMP*3}\\t\\n"
     INSTRUCTIONS = (

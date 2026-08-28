@@ -24,7 +24,7 @@ TOKENS: dict[str, dict[str, str]] = {
     },
     "\t\n": { # imp input/output
         " \t": "output number",
-        "  ": "output character",
+        "  ": "output character"
     },
     "\n": { # imp flow control
         "\n\n": "exit"

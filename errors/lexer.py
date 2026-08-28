@@ -1,6 +1,6 @@
 """ errors that can be raised during lexical analysis """
 
-from errors import WhitespaceError, with_info
+from errors import WhitespaceError
 
 class MissingSyntaxError(WhitespaceError):
     def __init__(

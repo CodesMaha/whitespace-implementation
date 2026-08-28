@@ -3,6 +3,7 @@ from execution.stack import CallStack
 
 class TestStackManipulation(TestCase):
     """ test stack manipulation imp such as for push """
+    
     # these are sample values. they can change but should be consistent
     VAL: int = 65 # capital a for testing, but can be any int
     VALS: list[int] = [VAL, VAL+1, VAL] # alternating

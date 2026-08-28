@@ -3,7 +3,8 @@ from execution.stack import CallStack
 from execution.evaluator import Evaluator
 
 class TestEvaluator(TestCase):
-    """ test the function that calls other functions """
+    """ test the evaluator that calls other functions """
+    
     # sample values. can be any but must be consistent
     VAL: str = " \t     \t" # capital a, 65, or 0b1000001
     PUSH_MANY_VAL: list[str] = ["push", VAL] * 2
