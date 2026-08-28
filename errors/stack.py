@@ -8,11 +8,16 @@ class EmptyStackError(WhitespaceError):
 
 class MissingStackError(WhitespaceError):
     def __init__(
-        self, message="Cannot perform operation due to insufficient stack size",
+        self, message="Cannot perform operation due to stack size",
         size: int | str = 0
     ):
         super().__init__(with_info(message, size))
 
 class PopZeroError(WhitespaceError):
-    def __init__(self, message="Cannot pop zero or less times"):
+    def __init__(
+            self, message="Stack size does not allow popping",
+            idx_to_pop: int | None = None
+        ):
+        if idx_to_pop is not None:
+            message = f"{message} item {idx_to_pop}"
         super().__init__(message)

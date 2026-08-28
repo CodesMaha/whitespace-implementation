@@ -24,7 +24,7 @@ class CallStack:
         current_node: Node | None = self.head
 
         if current_node is None:
-            raise EmptyStackError("No top calls or calls after to peek.")
+            raise EmptyStackError("No top calls or calls after to peek")
         
         for _ in range(n): # will not run if zero
             if current_node.next is None:
@@ -37,8 +37,7 @@ class CallStack:
         return self.peek_node(0).value
     
     def peek_all(self) -> list:
-        """ 
-        internal. can be used for testing and printing all current calls
+        """ internal. can be used for testing and printing all current calls
         Node.value -> Node.value where None is excluded
         """
         current_node: None | Node = self.head
@@ -65,8 +64,7 @@ class CallStack:
         return f"pushed {self.head.value}" # info msg
     
     def pop_many(self, n: int) -> list[Any]:
-        """ 
-        internal and one-indexed. 
+        """ internal and one-indexed. 
         retrieving list of Node.value until stack item n.
         can be used for function parameters 
         """
@@ -76,7 +74,7 @@ class CallStack:
         popped_vals: list[Any] = [] # to append to
         while len(popped_vals) < n:
             if self.head is None:
-                raise PopZeroError(f"Cannot access stack item {n}. Current stack size: {self.size}.")
+                raise PopZeroError(idx_to_pop=n)
             popped_vals.append(self.head.value) # top call
             self.head = self.head.next # next call
             self.size -= 1
@@ -95,7 +93,9 @@ class CallStack:
     def duplicate(self) -> str:
         """ duplicate top of stack """
         if self.is_empty():
-            raise EmptyStackError(f"No top call to duplicate. Current stack size: {self.size}.")
+            raise EmptyStackError(
+                f"No top call to duplicate. Current stack size: {self.size}"
+            )
         self.push(self.head.value) # also handles self.size+=1
         return f"duplicated {self.head.value}" # info msg
     
@@ -106,19 +106,23 @@ class CallStack:
         return f"copied {to_copy.value}" # info msg
     
     def slide(self, n: int) -> str:
-        """ 
-        keep only top of stack. 
+        """ keep only top of stack. 
         discard n.value then keep n.next.
         zero-indexed and not lazily evaluated
         """
         if self.is_empty():
-            raise EmptyStackError(f"Cannot slide {n} items after top of stack if top does not exist.")
+            raise EmptyStackError(
+                f"Cannot slide {n} items after top due to no top existing"
+            )
         elif self.size == 1:
             return "no items to slide off"
         
         # self.size counts from idx 1 and includes top, so -2
         if n > self.size-2:
-            raise MissingStackError(f"Cannot slide off top item or before. Current stack size: {self.size}.")
+            raise MissingStackError(
+                "Cannot slide off top or before item due to stack size",
+                size=self.size
+            )
         elif n == self.size-2:
             self.head.next = None
             self.size = 1
@@ -133,7 +137,9 @@ class CallStack:
     def swap(self) -> str:
         """ swap top item of stack with next item """
         if self.size < 2:
-            raise MissingStackError("Cannot swap top two stack items if none exist.")
+            raise MissingStackError(
+                "Cannot swap top two stack items if none exist"
+            )
         
         first_node: Node = self.head # top node
         second_node: Node = self.head.next # second node

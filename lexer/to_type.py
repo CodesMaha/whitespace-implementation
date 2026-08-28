@@ -8,8 +8,7 @@ NUMBER_PATTERN = r"[ \t]*" # for numbers
 LIMIT_7BIT = 127 # for 7-bit ascii characters
 
 def to_number(inp: str) -> int:
-    """ 
-    parse parameter into usable Number 
+    """ parse parameter into usable Number 
     where default pushing i.e. storage is for any Number
     """
     if not fullmatch(NUMBER_PATTERN, inp):
