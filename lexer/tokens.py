@@ -10,7 +10,7 @@ TOKENS: dict[str, dict[str, str]] = {
     " ": { # imp space
         " ": "push",
         "\n\n": "pop",
-        "\n": "duplicate",
+        "\n ": "duplicate",
         "\t ": "copy",
         "\t\n": "slide",
         "\n\t": "swap"

@@ -2,7 +2,6 @@
 
 from lexer.tokens import IMP_PATTERN, OP_PATTERNS, TOKENS
 from execution.parser import OPERATIONS # to check if conversion
-from lexer.to_type import to_number # conversion
 from errors.lexer import MissingSyntaxError
 
 from re import sub, match as re_match

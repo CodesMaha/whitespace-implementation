@@ -81,7 +81,7 @@ class CallStack:
             self.head = self.head.next # next call
             self.size -= 1
 
-        return popped_vals
+        return popped_vals[::-1] # return reversed
     
     def pop_one(self) -> Any:
         """ internal where return type is the value itself """
