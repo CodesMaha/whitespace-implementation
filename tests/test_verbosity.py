@@ -6,9 +6,9 @@ from read import get_filepath, read_filepath
 
 class FileLike:
     def __init__(self, text: str):
-        self.text = text
+        self._text = text
     def read(self) -> str:
-        return self.text
+        return self._text
 
 class TestEvalVerbosity(TestCase):
     """ test verbose=True and verbose=False """

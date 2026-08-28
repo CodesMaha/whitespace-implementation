@@ -32,39 +32,38 @@ class Evaluator:
 
     def evaluate(self) -> str:
         """ call funcs depending on curr tokens and Instruction """
-        if self.pos == self.token_no:
-            return self.res_sep.join(self.res)
-        imp = self._get_token()
+        while self.pos < self.token_no:
+            imp = self._get_token()
 
-        params: list[Any] = []
-        call: Instruction = OPERATIONS[imp]
-        self._incr()
+            params: list[Any] = []
+            call: Instruction = OPERATIONS[imp]
+            self._incr()
 
-        if call.stack_access:
-            params.append(self.stack)
-        if call.parameter_amt: # items to pop from stack
-            params.extend(self.stack.pop_many(call.parameter_amt))
-        if call.parameter_type: # accept parameter from tokens
-            params.append(
-                call.parameter_type(self._get_token())
-            ); self._incr()
+            if call.stack_access:
+                params.append(self.stack)
+            if call.parameter_amt: # items to pop from stack
+                params.extend(self.stack.pop_many(call.parameter_amt))
+            if call.parameter_type: # accept parameter from tokens
+                params.append(
+                    call.parameter_type(self._get_token())
+                ); self._incr()
 
-        if params: # call and pass in params
-            res: Any = call.operator(*params)
-        else:
-            res: Any = call.operator()
+            if params: # call and pass in params
+                res: Any = call.operator(*params)
+            else:
+                res: Any = call.operator()
 
-        if call.return_type: # convert return
-            res = call.return_type(res)
-        if call.store_return:
-            self.stack.push(res)
+            if call.return_type: # convert return
+                res = call.return_type(res)
+            if call.store_return:
+                self.stack.push(res)
 
-        if (not imp.startswith("output")) and (not self.verbose):
-            return self.evaluate()
-        
-        if not isinstance(res, str): # for join
-            self.res.append(repr(res))
-        else:
-            self.res.append(res)
+            if (not imp.startswith("output")) and (not self.verbose):
+                continue
+            
+            if not isinstance(res, str): # for join
+                self.res.append(repr(res))
+            else:
+                self.res.append(res)
 
-        return self.evaluate()
+        return self.res_sep.join(self.res)

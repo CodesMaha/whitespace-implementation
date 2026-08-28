@@ -44,30 +44,28 @@ class Tokenizer:
 
     def tokenize(self) -> list[str]:
         """ tokenize curr inp then return matched_tokens """
-        if self.pos == self.inp_len: # return at end of inp
-            return self.matched_tokens
+        while self.pos < self.inp_len:
+            m = re_match(IMP_PATTERN, self._next())
+            if not m: raise MissingSyntaxError(char_no=self.pos)
 
-        m = re_match(IMP_PATTERN, self._next())
-        if not m: raise MissingSyntaxError(char_no=self.pos)
+            imp: str = m.group(0)
+            self._update_pos(len(imp))
 
-        imp: str = m.group(0)
-        self._update_pos(len(imp))
+            try:
+                m = re_match(OP_PATTERNS[imp], self._next())
+            except KeyError as exc:
+                raise MissingSyntaxError(
+                    f"Unrecognized IMP used: {imp!r}"
+                ) from exc
+            if not m: raise MissingSyntaxError(char_no=self.pos)
 
-        try:
-            m = re_match(OP_PATTERNS[imp], self._next())
-        except KeyError as exc:
-            raise MissingSyntaxError(
-                f"Unrecognized IMP used: {imp!r}"
-            ) from exc
-        if not m: raise MissingSyntaxError(char_no=self.pos)
+            self._update_tokens(TOKENS[imp][m.group(0)])
+            self._update_pos(len(m.group(0)))
 
-        self._update_tokens(TOKENS[imp][m.group(0)])
-        self._update_pos(len(m.group(0)))
+            if OPERATIONS[self._get_top()].parameter_type:
+                # get until next newline
+                gvn_number = self._next().split("\n", 1)[0]
+                self._update_tokens(gvn_number) # no conversion
+                self._update_pos(len(gvn_number) + 1)
 
-        if OPERATIONS[self._get_top()].parameter_type:
-            # get until next newline
-            gvn_number = self._next().split("\n", 1)[0]
-            self._update_tokens(gvn_number) # no conversion
-            self._update_pos(len(gvn_number) + 1)
-
-        return self.tokenize()
+        return self.matched_tokens
