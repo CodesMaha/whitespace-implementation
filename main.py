@@ -1,6 +1,6 @@
 from lexer.tokenizer import Tokenizer
 from execution.stack import CallStack
-from execution.evaluator import evaluate_tokens
+from execution.evaluator import Evaluator
 
 from sys import stdin
 
@@ -27,13 +27,14 @@ def main():
     # initialize
     lex = Tokenizer()
     s = CallStack()
+    ev = Evaluator(stack=s)
 
     # main loop
     while True:
         inp_lines = get_input()
         lex.inp = "".join(inp_lines)[:-1]
-        print(lex.tokenize())
-        # print(f"{evaluate_tokens(tokenize("".join(inp_lines)[:-1]), s)}")
+        ev.tokens = lex.tokenize()
+        print(ev.evaluate())
 
 if __name__ == "__main__":
     main()

@@ -1,32 +1,65 @@
 """ map tokens from tokenization or lexical analysis to stack calls """
 
-from lexer.tokens import TOKENS
 from execution.parser import OPERATIONS, Instruction
 from execution.stack import CallStack
 
-from collections.abc import Iterable, Callable
 from typing import Any
 
-def evaluate_tokens(matched_tokens: Iterable, stack: CallStack) -> Callable | Any:
-    """ arg matched_tokens must have at least two items """
-    call: Instruction = OPERATIONS[TOKENS[matched_tokens[0]][matched_tokens[1]]]
-    params = [] # to append to and extend
+class Evaluator:
+    """ caller of funcs tokens respond to """
+    def __init__(self, stack: CallStack):
+        self.stack = stack # stack instance
+        self.tokens = []
+        self.imp_sep: str = "\n"
 
-    if call.stack_access:
-        params.append(stack) # current stack instance
-    if call.parameter_amt: # items to pop from stack
-        params.extend(stack.pop_many(call.parameter_amt))
-    if call.parameter_type: # accept parameter from input
-        params.append(call.parameter_type(matched_tokens[2]))
-    
-    if params:
-        res = call.operator(*params)
-    else: # no parameteres to pass in
-        res = call.operator()
+    @property
+    def tokens(self) -> list[str]:
+        """ get from tokenizer; shallow set """
+        return self._matched_tokens
+    @tokens.setter
+    def tokens(self, new_matches) -> None:
+        self._matched_tokens: list[str] = new_matches
+        self.token_no: int = len(self._matched_tokens)
+        self.pos: int = 0
+        self.res: list[str] = []
 
-    if call.return_type:
-        res = call.return_type(res) # convert here
-    if call.store_return: # store in stack
-        stack.push(res)
-    
-    return res
+    def _get_token(self, pos_incr: int = 0) -> str:
+        return self._matched_tokens[self.pos + pos_incr]
+
+    def _incr(self, incr: int = 1) -> None:
+        self.pos += incr
+
+    def evaluate(self) -> str:
+        """ call funcs depending on curr tokens and Instruction """
+        if self.pos == self.token_no:
+            return self.imp_sep.join(self.res)
+
+        params: list[Any] = []
+        call: Instruction = OPERATIONS[self._get_token()]
+        self._incr()
+
+        if call.stack_access:
+            params.append(self.stack)
+        if call.parameter_amt: # items to pop from stack
+            params.extend(self.stack.pop_many(call.parameter_amt))
+        if call.parameter_type: # accept parameter from tokens
+            params.append(
+                call.parameter_type(self._get_token())
+            ); self._incr()
+
+        if params: # call and pass in params
+            res: Any = call.operator(*params)
+        else:
+            res: Any = call.operator()
+
+        if call.return_type: # convert return
+            res = call.return_type(res)
+        if call.store_return:
+            self.stack.push(res)
+
+        if not isinstance(res, str): # for join
+            self.res.append(repr(res))
+        else:
+            self.res.append(res)
+
+        return self.evaluate()

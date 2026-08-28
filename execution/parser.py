@@ -11,14 +11,13 @@ from sys import exit
 
 from dataclasses import dataclass
 from collections.abc import Callable
-from typing import Any
 
 @dataclass
 class Instruction:
     operator: Callable 
     parameter_amt: int = 0 # how many stack items to pop
-    parameter_type: Any = None
-    return_type: Any = None
+    parameter_type: Callable = None
+    return_type: Callable = None
     store_return: bool = False # push to stack
     stack_access: bool = False # if access to stack (one more param)
 

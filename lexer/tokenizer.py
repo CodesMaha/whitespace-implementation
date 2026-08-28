@@ -26,49 +26,49 @@ class Tokenizer:
         self.inp_len: int = len(self._inp)
         self.matched_tokens: list[str | int] = []
 
-    def update_tokens(self, new_re_match) -> None:
-        """ update matched_tokens with new_re_match """
-        self.matched_tokens.append(new_re_match)
-    def get_top(self) -> str | int:
+    def _update_tokens(self, new_match) -> None:
+        """ update matched_tokens with new_match """
+        self.matched_tokens.append(new_match)
+    def _get_top(self) -> str | int:
         """ get top token from matched_tokens """
         try:
             return self.matched_tokens[-1]
         except IndexError:
             return ""
     
-    def update_pos(self, gvn_incr: int = 0) -> None:
+    def _update_pos(self, gvn_incr: int = 0) -> None:
         """ update from get_top len, or gvn_incr """
         self.pos += gvn_incr
-    def next(self) -> str:
+    def _next(self) -> str:
         """ inp after pos """
         return self.inp[self.pos:]
 
-    def tokenize(self) -> list[str | int]:
+    def tokenize(self) -> list[str]:
         """ tokenize curr inp then return matched_tokens """
         if self.pos == self.inp_len: # return at end of inp
             return self.matched_tokens
 
-        m = re_match(IMP_PATTERN, self.next())
+        m = re_match(IMP_PATTERN, self._next())
         if not m: raise MissingSyntaxError(char_no=self.pos)
 
         imp: str = m.group(0)
-        self.update_pos(len(imp))
+        self._update_pos(len(imp))
 
         try:
-            m = re_match(OP_PATTERNS[imp], self.next())
+            m = re_match(OP_PATTERNS[imp], self._next())
         except KeyError as exc:
             raise MissingSyntaxError(
                 f"Unrecognized IMP used: {imp!r}"
             ) from exc
         if not m: raise MissingSyntaxError(char_no=self.pos)
 
-        self.update_tokens(TOKENS[imp][m.group(0)])
-        self.update_pos(len(m.group(0)))
+        self._update_tokens(TOKENS[imp][m.group(0)])
+        self._update_pos(len(m.group(0)))
 
-        if OPERATIONS[self.get_top()].parameter_type:
-            # get until next newline and convert to number
-            gvn_number = self.next().split("\n", 1)[0]
-            self.update_tokens(to_number(gvn_number))
-            self.update_pos(len(gvn_number) + 1)
+        if OPERATIONS[self._get_top()].parameter_type:
+            # get until next newline
+            gvn_number = self._next().split("\n", 1)[0]
+            self._update_tokens(gvn_number) # no conversion
+            self._update_pos(len(gvn_number) + 1)
 
         return self.tokenize()
