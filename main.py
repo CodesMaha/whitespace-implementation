@@ -1,6 +1,7 @@
 from lexer.tokenizer import Tokenizer
 from execution.stack import CallStack
 from execution.evaluator import Evaluator
+from config import VERBOSE_INSTRUCTIONS
 
 from sys import stdin
 
@@ -27,7 +28,7 @@ def main():
     # initialize
     lex = Tokenizer()
     s = CallStack()
-    ev = Evaluator(stack=s)
+    ev = Evaluator(s, verbose=VERBOSE_INSTRUCTIONS)
 
     # main loop
     while True:

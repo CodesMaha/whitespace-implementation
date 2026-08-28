@@ -7,10 +7,11 @@ from typing import Any
 
 class Evaluator:
     """ caller of funcs tokens respond to """
-    def __init__(self, stack: CallStack):
+    def __init__(self, stack: CallStack, verbose: bool = False):
         self.stack = stack # stack instance
         self.tokens = []
-        self.imp_sep: str = "\n"
+        self.verbose = verbose
+        self.res_sep: str = "\n" if verbose else ""
 
     @property
     def tokens(self) -> list[str]:
@@ -32,10 +33,11 @@ class Evaluator:
     def evaluate(self) -> str:
         """ call funcs depending on curr tokens and Instruction """
         if self.pos == self.token_no:
-            return self.imp_sep.join(self.res)
+            return self.res_sep.join(self.res)
+        imp = self._get_token()
 
         params: list[Any] = []
-        call: Instruction = OPERATIONS[self._get_token()]
+        call: Instruction = OPERATIONS[imp]
         self._incr()
 
         if call.stack_access:
@@ -57,6 +59,9 @@ class Evaluator:
         if call.store_return:
             self.stack.push(res)
 
+        if (not imp.startswith("output")) and (not self.verbose):
+            return self.evaluate()
+        
         if not isinstance(res, str): # for join
             self.res.append(repr(res))
         else:

@@ -12,7 +12,7 @@ class TestEvaluator(TestCase):
 
     def setUp(self):
         self.s = CallStack()
-        self.ev = Evaluator(self.s)
+        self.ev = Evaluator(self.s, verbose=True)
 
     def test_stack_duplicate(self):
         """ test stack_access=True """
