@@ -28,7 +28,7 @@ class CallStack:
         
         for _ in range(n): # will not run if zero
             if current_node.next is None:
-                raise MissingStackError(f"Cannot access stack item {n}.")
+                raise MissingStackError(size=f"{self.size} < {n}")
             current_node = current_node.next
         return current_node
     

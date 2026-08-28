@@ -4,7 +4,7 @@ from errors.lexer import NumberError, CharacterError
 
 from re import fullmatch
 
-NUMBER_PATTERN = r"^[ \t]+\n$" # for numbers
+NUMBER_PATTERN = r"[ \t]*" # for numbers
 LIMIT_7BIT = 127 # for 7-bit ascii characters
 
 def to_number(inp: str) -> int:
@@ -16,9 +16,9 @@ def to_number(inp: str) -> int:
         raise NumberError(f'Cannot convert {inp!r} into usable number.')
 
     # convert spaces to zeros and tabs to ones
-    res: int | str = inp.replace(" ", "0").replace("\t", "1")[:-1]
+    res: int | str = inp.replace(" ", "0").replace("\t", "1")
     
-    if len(res) < 2: # after newline is removed
+    if len(res) < 2: # newline should be removed beforehand
         raise NumberError # has to contain sign and one digit
     
     if res[0] == "1":

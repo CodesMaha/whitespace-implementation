@@ -1,4 +1,4 @@
-from lexer.tokenizer import tokenize
+from lexer.tokenizer import Tokenizer
 from execution.stack import CallStack
 from execution.evaluator import evaluate_tokens
 
@@ -25,13 +25,15 @@ def main():
     print("WHITESPACE") # title
 
     # initialize
+    lex = Tokenizer()
     s = CallStack()
 
     # main loop
     while True:
-        
         inp_lines = get_input()
-        print(f"{evaluate_tokens(tokenize("".join(inp_lines)[:-1]), s)}")
+        lex.inp = "".join(inp_lines)[:-1]
+        print(lex.tokenize())
+        # print(f"{evaluate_tokens(tokenize("".join(inp_lines)[:-1]), s)}")
 
 if __name__ == "__main__":
     main()
