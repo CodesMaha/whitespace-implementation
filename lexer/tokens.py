@@ -7,7 +7,7 @@ def sort_tokens(tokens: Iterable) -> list:
     return sorted(tokens, key=len, reverse=True)
 
 TOKENS: dict[str, dict[str, str]] = {
-    " ": { # imp space
+    " ": { # imp stack
         " ": "push",
         "\n\n": "pop",
         "\n ": "duplicate",
@@ -21,6 +21,10 @@ TOKENS: dict[str, dict[str, str]] = {
         " \n": "mul",
         "\t ": "floordiv",
         "\t\t": "mod"
+    },
+    "\t\t": { # imp heap
+        " ": "store",
+        "\t": "retrieve"
     },
     "\t\n": { # imp input/output
         " \t": "output number",

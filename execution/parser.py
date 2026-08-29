@@ -1,11 +1,11 @@
 """ map tokens to functions """
 
-# import statements
 # parameter types
 import lexer.to_type as type
 
 # operations
 from execution.stack import CallStack
+from execution.heap import Heap
 from operator import add, sub, mul, floordiv, mod
 from sys import exit
 
@@ -20,6 +20,7 @@ class Instruction:
     return_type: Callable = None
     store_return: bool = False # push to stack
     stack_access: bool = False # if access to stack (one more param)
+    heap_accesss: bool = False
 
 OPERATIONS: dict[str, Instruction] = {
     "push": Instruction(CallStack.push, stack_access=True, parameter_type=type.to_number),
@@ -33,6 +34,8 @@ OPERATIONS: dict[str, Instruction] = {
     "mul": Instruction(mul, 2, store_return=True),
     "floordiv": Instruction(floordiv, 2, store_return=True),
     "mod": Instruction(mod, 2, store_return=True),
+    "store": Instruction(Heap.store, 2, heap_accesss=True),
+    "retrieve": Instruction(Heap.retrieve, 1, store_return=True, heap_accesss=True),
     "output number": Instruction(CallStack.pop_one, stack_access=True),
     "output character": Instruction(CallStack.pop_one, stack_access=True, return_type=type.to_character),
     "exit": Instruction(exit)

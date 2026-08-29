@@ -2,13 +2,17 @@
 
 from execution.parser import OPERATIONS, Instruction
 from execution.stack import CallStack
+from execution.heap import Heap
 
 from typing import Any
 
 class Evaluator:
     """ caller of funcs tokens respond to """
-    def __init__(self, stack: CallStack, verbose: bool = False):
-        self.stack = stack # stack instance
+    def __init__(
+            self, stack: CallStack, heap: Heap,
+            *, verbose: bool = False
+        ):
+        self.stack, self.heap = stack, heap # memory instances
         self.tokens = []
         self.verbose = verbose
         self.res_sep: str = "\n" if verbose else ""
@@ -39,8 +43,11 @@ class Evaluator:
             call: Instruction = OPERATIONS[imp]
             self._incr()
 
+            if call.heap_accesss:
+                params.append(self.heap)
             if call.stack_access:
                 params.append(self.stack)
+            
             if call.parameter_amt: # items to pop from stack
                 params.extend(self.stack.pop_many(call.parameter_amt))
             if call.parameter_type: # accept parameter from tokens

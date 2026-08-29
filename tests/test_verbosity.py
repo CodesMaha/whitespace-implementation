@@ -15,7 +15,7 @@ class TestEvalVerbosity(TestCase):
 
     def setUp(self):
         self.s = CallStack()
-        self.ev = Evaluator(self.s, verbose=True)
+        self.ev = Evaluator(self.s, None, verbose=True)
 
     def test_output_number(self):
         self.ev.tokens = ["push", "  ", "output number"]

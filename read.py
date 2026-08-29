@@ -3,11 +3,12 @@ from collections.abc import Iterable
 from sys import argv
 
 from lexer.tokenizer import Tokenizer
-from execution.stack import CallStack
-from execution.evaluator import Evaluator
+from execution import CallStack, Heap, Evaluator
 from config import VERBOSE_FILE
 
 def get_filepath(args: Iterable[str]) -> str:
+    """ use argparse to read args with .filepath """
+
     parser = argparse.ArgumentParser(
         prog="Whitespace interpreter",
         description="Interpret Whitespace code with the help of Python."
@@ -20,9 +21,12 @@ def get_filepath(args: Iterable[str]) -> str:
     return args.filepath
 
 def read_filepath(*, fp: str = "", file = None) -> str:
+    """ read from filepath or file-like object """
+    
     lex = Tokenizer()
     s = CallStack()
-    ev = Evaluator(s, verbose=VERBOSE_FILE)
+    h = Heap()
+    ev = Evaluator(s, h, verbose=VERBOSE_FILE)
 
     if fp:
         with open(fp, "r") as f:

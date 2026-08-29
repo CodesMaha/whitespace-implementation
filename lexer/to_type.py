@@ -12,7 +12,7 @@ def to_number(inp: str) -> int:
     where default pushing i.e. storage is for any Number
     """
     if not fullmatch(NUMBER_PATTERN, inp):
-        raise NumberError(f'Cannot convert {inp!r} into usable number.')
+        raise NumberError(f'Cannot convert {inp!r} into usable number')
 
     # convert spaces to zeros and tabs to ones
     res: int | str = inp.replace(" ", "0").replace("\t", "1")
@@ -30,6 +30,9 @@ def to_character(inp: int) -> str:
     """ convert Number to Character """
     # ensure clamping to range from 0 to self.limit_7b
     if not (LIMIT_7BIT >= inp >= 0):
-        raise CharacterError(f"Character can only be converted from an ASCII code. Number inputted: {inp}.")
+        raise CharacterError(
+            "Character can only be converted from an ASCII code. "
+            f"Number inputted: {inp}"
+        )
     
     return chr(inp)

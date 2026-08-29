@@ -1,7 +1,7 @@
 """ stack (linked list) of information related to function calls """
 
 from typing import Any
-from errors.stack import EmptyStackError, MissingStackError, PopZeroError
+from errors.memory import EmptyStackError, MissingStackError, PopZeroError
 
 class Node:
     """ single node for function call """
@@ -37,7 +37,7 @@ class CallStack:
         return self.peek_node(0).value
     
     def peek_all(self) -> list:
-        """ internal. can be used for testing and printing all current calls
+        """ internal. can be used for testing and printing all current calls. 
         Node.value -> Node.value where None is excluded
         """
         current_node: None | Node = self.head
@@ -128,7 +128,7 @@ class CallStack:
             self.size = 1
             return "slid off all"
         
-        # if self.peek is zero-indexed then zero is top, so +1
+        # self.peek is zero-indexed then zero is top, so +1
         slide_end: Node = self.peek_node(n+1) # after n items
         self.head.next = slide_end.next # keep n.next
         self.size -= n + 1
@@ -138,7 +138,8 @@ class CallStack:
         """ swap top item of stack with next item """
         if self.size < 2:
             raise MissingStackError(
-                "Cannot swap top two stack items if none exist"
+                "Cannot swap top two stack items with stack size",
+                size=f"{self.size} < 2"
             )
         
         first_node: Node = self.head # top node
