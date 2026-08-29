@@ -26,6 +26,10 @@ def to_number(inp: str) -> int:
         res = int(res[1:], 2)
     return res
 
+def integer_div(a: int, b: int) -> int:
+    """ division concerning truncated floats """
+    return int(a / b)
+
 def to_character(inp: int) -> str:
     """ convert Number to Character """
     # ensure clamping to range from 0 to self.limit_7b

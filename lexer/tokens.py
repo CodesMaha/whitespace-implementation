@@ -19,7 +19,7 @@ TOKENS: dict[str, dict[str, str]] = {
         "  ": "add",
         " \t": "sub",
         " \n": "mul",
-        "\t ": "floordiv",
+        "\t ": "div",
         "\t\t": "mod"
     },
     "\t\t": { # imp heap

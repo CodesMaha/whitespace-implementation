@@ -54,3 +54,11 @@ class TestEvaluator(TestCase):
         self.ev.tokens = ["push", self.VAL, "push", "  ", "mod"]
         with self.assertRaises(ZeroDivisionError):
             self.ev.evaluate()
+
+    def test_integer_div(self):
+        for a, b, c in ((5, 2, 2), (5, -2, -2)):
+            self.s.push_many([a, b])
+            self.ev.tokens = ["div"]
+            res = self.ev.evaluate()
+            self.assertEqual(res, f"{c}")
+            self.assertIn(c, self.s.peek_all())
