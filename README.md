@@ -43,7 +43,8 @@ python read.py FILEPATH
 # Features
 * Stack manipulation.
 * Arithmetic.
-* Printing numbers and characters.
+* Heap access.
+* Printing.
 
 ---
 
