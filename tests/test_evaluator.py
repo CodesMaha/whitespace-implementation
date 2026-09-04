@@ -1,4 +1,5 @@
 from unittest import TestCase
+from unittest.mock import patch
 from execution.stack import CallStack
 from execution.evaluator import Evaluator
 
@@ -35,6 +36,23 @@ class TestEvaluator(TestCase):
         res = self.ev.evaluate()
         self.assertEqual(res, repr(self.ASCII_VAL))
         self.assertEqual(self.s.peek_all(), [])
+
+    def test_input_character(self):
+        """ test input_access=True """
+        self.s.push(self.ASCII_VAL)
+        self.ev.tokens = ["input character"]
+        with patch("sys.stdin.readline", return_value=chr(self.ASCII_VAL)+"\n"):
+            res = self.ev.evaluate()
+        self.assertEqual(res, "")
+        self.assertEqual(self.ev.heap.retrieve(self.ASCII_VAL), self.ASCII_VAL)
+
+    def test_input_number(self):
+        self.s.push(self.ASCII_VAL)
+        self.ev.tokens = ["input number"]
+        with patch("sys.stdin.readline", return_value=f"-{self.ASCII_VAL}\n"):
+            res = self.ev.evaluate()
+        self.assertEqual(res, "")
+        self.assertEqual(self.ev.heap.retrieve(self.ASCII_VAL), -self.ASCII_VAL)
 
     def test_add(self):
         """ test parameter_amt=Truthy """

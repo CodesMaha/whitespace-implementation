@@ -11,7 +11,7 @@ def to_number(inp: str) -> int:
     """ parse parameter into usable Number 
     where default pushing i.e. storage is for any Number
     """
-    if not fullmatch(NUMBER_PATTERN, inp):
+    if fullmatch(NUMBER_PATTERN, inp) is None:
         raise NumberError(f'Cannot convert {inp!r} into usable number')
 
     # convert spaces to zeros and tabs to ones
@@ -33,10 +33,13 @@ def integer_div(a: int, b: int) -> int:
 def to_character(inp: int) -> str:
     """ convert Number to Character """
     # ensure clamping to range from 0 to self.limit_7b
-    if not (LIMIT_7BIT >= inp >= 0):
+    if not is_7bit_ascii(inp):
         raise CharacterError(
             "Character can only be converted from an ASCII code. "
             f"Number inputted: {inp}"
         )
     
     return chr(inp)
+
+def is_7bit_ascii(inp: int) -> bool:
+    return 0 <= inp <= LIMIT_7BIT

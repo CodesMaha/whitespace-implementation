@@ -2,6 +2,7 @@
 
 from execution.parser import OPERATIONS, Instruction
 from execution import CallStack, Heap
+from custom_operator import InputReader
 
 from typing import Any
 
@@ -12,8 +13,11 @@ class Evaluator:
             stack: CallStack | None = None, 
             *, verbose: bool = False
         ):
-        self.stack = stack or CallStack() # memory instances
+        # instances
         self.heap = heap or Heap()
+        self.stack = stack or CallStack()
+        self.input_reader = InputReader(self.heap)
+
         self.tokens = []
         self.verbose = verbose
         self.res_sep: str = "\n" if verbose else ""
@@ -46,6 +50,8 @@ class Evaluator:
             call: Instruction = OPERATIONS[imp]
             self._incr()
 
+            if call.input_access:
+                params.append(self.input_reader)
             if call.heap_accesss:
                 params.append(self.heap)
             if call.stack_access:

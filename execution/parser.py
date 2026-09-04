@@ -17,6 +17,7 @@ class Instruction:
     parameter_type: Callable | None = None
     return_type: Callable | None = None
     store_return: bool = False # push to stack
+    input_access: bool = False # requires input instance
     stack_access: bool = False # requires stack instance
     heap_accesss: bool = False # requires heap instance
 
@@ -34,7 +35,9 @@ OPERATIONS: dict[str, Instruction] = {
     "mod": Instruction(mod, 2, store_return=True),
     "store": Instruction(Heap.store, 2, heap_accesss=True),
     "retrieve": Instruction(Heap.retrieve, 1, store_return=True, heap_accesss=True),
-    "output number": Instruction(CallStack.pop_one, stack_access=True),
+    "input character": Instruction(c_op.InputReader.read_character, 1, input_access=True),
+    "input number": Instruction(c_op.InputReader.read_number, 1, input_access=True),
     "output character": Instruction(CallStack.pop_one, stack_access=True, return_type=c_op.to_character),
+    "output number": Instruction(CallStack.pop_one, stack_access=True),
     "exit": Instruction()
 }

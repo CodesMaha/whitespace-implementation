@@ -18,3 +18,7 @@ class NumberError(WhitespaceError):
 class CharacterError(WhitespaceError):
     def __init__(self, message="Invalid format for a character"):
         super().__init__(message)
+
+class UserNumberError(WhitespaceError):
+    def __init__(self, message="Invalid numeric input from user"):
+        super().__init__(message)

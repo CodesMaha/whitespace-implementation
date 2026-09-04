@@ -27,8 +27,10 @@ TOKENS: dict[str, dict[str, str]] = {
         "\t": "retrieve"
     },
     "\t\n": { # imp input/output
-        " \t": "output number",
-        "  ": "output character"
+        "\t ": "input character",
+        "\t\t": "input number",
+        "  ": "output character",
+        " \t": "output number"
     },
     "\n": { # imp flow control
         "\n\n": "exit"
