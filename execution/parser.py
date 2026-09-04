@@ -1,7 +1,7 @@
 """ map tokens to functions """
 
 # parameter types
-import lexer.to_type as type
+import custom_operator as c_op
 
 # operations
 from execution import CallStack, Heap
@@ -21,20 +21,20 @@ class Instruction:
     heap_accesss: bool = False # requires heap instance
 
 OPERATIONS: dict[str, Instruction] = {
-    "push": Instruction(CallStack.push, stack_access=True, parameter_type=type.to_number),
+    "push": Instruction(CallStack.push, stack_access=True, parameter_type=c_op.to_number),
     "pop": Instruction(CallStack.pop, stack_access=True),
     "duplicate": Instruction(CallStack.duplicate, stack_access=True),
-    "copy": Instruction(CallStack.copy, stack_access=True, parameter_type=type.to_number),
-    "slide": Instruction(CallStack.slide, stack_access=True, parameter_type=type.to_number),
+    "copy": Instruction(CallStack.copy, stack_access=True, parameter_type=c_op.to_number),
+    "slide": Instruction(CallStack.slide, stack_access=True, parameter_type=c_op.to_number),
     "swap": Instruction(CallStack.swap, stack_access=True),
     "add": Instruction(add, 2, store_return=True),
     "sub": Instruction(sub, 2, store_return=True),
     "mul": Instruction(mul, 2, store_return=True),
-    "div": Instruction(type.integer_div, 2, store_return=True),
+    "div": Instruction(c_op.integer_div, 2, store_return=True),
     "mod": Instruction(mod, 2, store_return=True),
     "store": Instruction(Heap.store, 2, heap_accesss=True),
     "retrieve": Instruction(Heap.retrieve, 1, store_return=True, heap_accesss=True),
     "output number": Instruction(CallStack.pop_one, stack_access=True),
-    "output character": Instruction(CallStack.pop_one, stack_access=True, return_type=type.to_character),
+    "output character": Instruction(CallStack.pop_one, stack_access=True, return_type=c_op.to_character),
     "exit": Instruction()
 }
