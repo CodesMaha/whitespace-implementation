@@ -33,7 +33,9 @@ def main():
         inp_lines = get_input()
         lex.inp = "".join(inp_lines)[:-1]
         ev.tokens = lex.tokenize()
-        print(ev.evaluate())
+        for line in ev.evaluate():
+            print(line, end="", flush=True)
+        print("\n")
 
 if __name__ == "__main__":
     main()

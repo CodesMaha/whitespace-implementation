@@ -33,7 +33,7 @@ class TestHeapRetrieval(TestCase):
         )
         ev = Evaluator(self.h)
         ev.tokens = lex.tokenize()
-        res = ev.evaluate()
+        res = ev.consumed_eval()
 
         self.assertEqual(res, "")
         self.assertEqual(ev.stack.peek_all(), [self.VAL])

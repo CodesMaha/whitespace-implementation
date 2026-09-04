@@ -37,4 +37,5 @@ def read_filepath(*, fp: str = "", file: TextIO = None) -> str:
     return ev.evaluate()
 
 if __name__ == "__main__":
-    print(read_filepath(fp=get_filepath(argv[1:])))
+    for line in read_filepath(fp=get_filepath(argv[1:])):
+        print(line, end="", flush=True)

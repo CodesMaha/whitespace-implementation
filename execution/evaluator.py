@@ -4,6 +4,7 @@ from execution.parser import OPERATIONS, Instruction
 from execution import CallStack, Heap
 from custom_operator import InputReader
 
+from collections.abc import Iterator
 from typing import Any
 
 class Evaluator:
@@ -20,7 +21,6 @@ class Evaluator:
 
         self.tokens = []
         self.verbose = verbose
-        self.res_sep: str = "\n" if verbose else ""
 
     @property
     def tokens(self) -> list[str]:
@@ -30,8 +30,7 @@ class Evaluator:
     def tokens(self, new_matches) -> None:
         self._matched_tokens: list[str] = new_matches
         self.token_no: int = len(self._matched_tokens)
-        self.pos: int = 0
-        self.res: list[str] = []
+        self.pos: int = 0 # current token <= total token_no
 
     def _get_token(self, pos_incr: int = 0) -> str:
         return self._matched_tokens[self.pos + pos_incr]
@@ -39,9 +38,12 @@ class Evaluator:
     def _incr(self, incr: int = 1) -> None:
         self.pos += incr
 
-    def evaluate(self) -> str:
+    def evaluate(self) -> Iterator[str]:
         """ call funcs depending on curr tokens and Instruction """
+
         while self.pos < self.token_no:
+            is_first_instruction = self.pos == 0
+
             imp = self._get_token()
             if imp == "exit":
                 break
@@ -80,9 +82,21 @@ class Evaluator:
             ):
                 continue
             
-            if not isinstance(res, str): # for join
-                self.res.append(repr(res))
-            else:
-                self.res.append(res)
+            res = res if isinstance(res, str) else repr(res)
 
-        return self.res_sep.join(self.res)
+            # verbose instructions should be in a sea of newlines
+            if (not imp.startswith("output") and self.verbose):
+                if (self.token_no == 1) or (self.pos == (self.token_no - 1) and  self.tokens[1].isalpha()):
+                    res = res # no newline for only one instruction
+                elif (self.pos == self.token_no): # for end
+                    res = f"\n{res}" # no end newline
+                elif is_first_instruction: # for start
+                    res = f"{res}\n" # no start newline
+                else:
+                    res = f"\n{res}\n"
+
+            yield res
+
+    def consumed_eval(self) -> str:
+        """ mainly for the purpose of testing """
+        return "".join(self.evaluate())
