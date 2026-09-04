@@ -1,10 +1,8 @@
 from unittest import TestCase
-from execution.heap import Heap
+from execution import Heap, Evaluator
 from errors.memory import AddressNotFoundError
 
 from lexer.tokenizer import Tokenizer
-from execution.evaluator import Evaluator
-from execution.stack import CallStack
 
 class TestHeapRetrieval(TestCase):
     """ test heap storage and retrieval """
@@ -25,7 +23,6 @@ class TestHeapRetrieval(TestCase):
             self.h.retrieve(self.VAL)
 
     def test_eval_retrieve(self):
-        s = CallStack()
         lex = Tokenizer()
         lex.inp = (
             "\\32\\32\\32\\32\\n" # push 0
@@ -34,10 +31,10 @@ class TestHeapRetrieval(TestCase):
             "\\32\\32\\32\\32\\n" # push 0
             "\\t\\t\\t" # retrieve from heap
         )
-        ev = Evaluator(s, self.h)
+        ev = Evaluator(self.h)
         ev.tokens = lex.tokenize()
         res = ev.evaluate()
 
         self.assertEqual(res, "")
-        self.assertEqual(s.peek_all(), [self.VAL])
+        self.assertEqual(ev.stack.peek_all(), [self.VAL])
         self.assertEqual(self.h.heap_dict, {self.ADDR: self.VAL})

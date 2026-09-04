@@ -6,7 +6,6 @@ import lexer.to_type as type
 # operations
 from execution import CallStack, Heap
 from operator import add, sub, mul, mod
-from sys import exit
 
 from dataclasses import dataclass
 from collections.abc import Callable

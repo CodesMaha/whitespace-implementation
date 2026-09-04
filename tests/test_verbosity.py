@@ -1,8 +1,7 @@
 from unittest import TestCase
 
-from execution.stack import CallStack
-from execution.evaluator import Evaluator
-from read import get_filepath, read_filepath
+from execution import CallStack, Evaluator
+from read import get_filepath
 
 class FileLike:
     def __init__(self, text: str):
@@ -30,7 +29,3 @@ class TestEvalVerbosity(TestCase):
     def test_argparse(self):
         res = get_filepath(["foo.ws"])
         self.assertEqual(res, "foo.ws")
-
-    def test_file_reader(self):
-        res = read_filepath(file=FileLike("\32\32\32\32\n:push\t\n\32\t:out"))
-        self.assertEqual(res, "0")

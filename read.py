@@ -1,9 +1,10 @@
 import argparse
 from collections.abc import Iterable
+from typing import TextIO
 from sys import argv
 
 from lexer.tokenizer import Tokenizer
-from execution import CallStack, Heap, Evaluator
+from execution import Evaluator
 from config import VERBOSE_FILE
 
 def get_filepath(args: Iterable[str]) -> str:
@@ -20,13 +21,11 @@ def get_filepath(args: Iterable[str]) -> str:
     args = parser.parse_args(args)
     return args.filepath
 
-def read_filepath(*, fp: str = "", file = None) -> str:
+def read_filepath(*, fp: str = "", file: TextIO = None) -> str:
     """ read from filepath or file-like object """
     
     lex = Tokenizer()
-    s = CallStack()
-    h = Heap()
-    ev = Evaluator(s, h, verbose=VERBOSE_FILE)
+    ev = Evaluator(verbose=VERBOSE_FILE)
 
     if fp:
         with open(fp, "r") as f:

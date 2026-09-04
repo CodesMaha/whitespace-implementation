@@ -1,18 +1,19 @@
 """ map tokens from tokenization or lexical analysis to stack calls """
 
 from execution.parser import OPERATIONS, Instruction
-from execution.stack import CallStack
-from execution.heap import Heap
+from execution import CallStack, Heap
 
 from typing import Any
 
 class Evaluator:
     """ caller of funcs tokens respond to """
     def __init__(
-            self, stack: CallStack, heap: Heap,
+            self, heap: Heap | None = None,
+            stack: CallStack | None = None, 
             *, verbose: bool = False
         ):
-        self.stack, self.heap = stack, heap # memory instances
+        self.stack = stack or CallStack() # memory instances
+        self.heap = heap or Heap()
         self.tokens = []
         self.verbose = verbose
         self.res_sep: str = "\n" if verbose else ""

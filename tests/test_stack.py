@@ -1,5 +1,5 @@
 from unittest import TestCase
-from execution.stack import CallStack
+from execution import CallStack
 
 class TestStackManipulation(TestCase):
     """ test stack manipulation imp such as for push """
