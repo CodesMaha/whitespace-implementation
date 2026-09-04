@@ -13,10 +13,10 @@ from collections.abc import Callable
 
 @dataclass
 class Instruction:
-    operator: Callable 
+    operator: Callable | None = None
     parameter_amt: int = 0 # how many stack items to pop
-    parameter_type: Callable = None
-    return_type: Callable = None
+    parameter_type: Callable | None = None
+    return_type: Callable | None = None
     store_return: bool = False # push to stack
     stack_access: bool = False # requires stack instance
     heap_accesss: bool = False # requires heap instance
@@ -37,5 +37,5 @@ OPERATIONS: dict[str, Instruction] = {
     "retrieve": Instruction(Heap.retrieve, 1, store_return=True, heap_accesss=True),
     "output number": Instruction(CallStack.pop_one, stack_access=True),
     "output character": Instruction(CallStack.pop_one, stack_access=True, return_type=type.to_character),
-    "exit": Instruction(exit)
+    "exit": Instruction()
 }

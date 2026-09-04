@@ -38,6 +38,8 @@ class Evaluator:
         """ call funcs depending on curr tokens and Instruction """
         while self.pos < self.token_no:
             imp = self._get_token()
+            if imp == "exit":
+                break
 
             params: list[Any] = []
             call: Instruction = OPERATIONS[imp]
@@ -65,7 +67,10 @@ class Evaluator:
             if call.store_return:
                 self.stack.push(res)
 
-            if (not imp.startswith("output")) and (not self.verbose):
+            if ( # check for verbosity exemptions
+                (res is None) # no output produced
+                or (not imp.startswith("output") and not self.verbose)
+            ):
                 continue
             
             if not isinstance(res, str): # for join
