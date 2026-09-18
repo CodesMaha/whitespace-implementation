@@ -1,5 +1,5 @@
 from unittest import TestCase
-from execution import CallStack
+from execution import Stack
 
 class TestStackManipulation(TestCase):
     """ test stack manipulation imp such as for push """
@@ -9,7 +9,7 @@ class TestStackManipulation(TestCase):
     VALS: list[int] = [VAL, VAL+1, VAL] # alternating
 
     def setUp(self):
-        self.s = CallStack()
+        self.s = Stack()
 
     def test_peek(self):
         self.s.push(self.VAL)

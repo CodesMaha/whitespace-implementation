@@ -1,6 +1,6 @@
 from unittest import TestCase
 from unittest.mock import patch
-from execution.stack import CallStack
+from execution.stack import Stack
 from execution.evaluator import Evaluator
 
 class TestEvaluator(TestCase):
@@ -13,7 +13,7 @@ class TestEvaluator(TestCase):
     STACK_VALS: list[int] = [ASCII_VAL] * 2
 
     def setUp(self):
-        self.s = CallStack()
+        self.s = Stack()
         self.ev = Evaluator(None, self.s, verbose=True)
 
     def test_stack_duplicate(self):

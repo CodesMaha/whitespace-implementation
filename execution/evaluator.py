@@ -1,7 +1,7 @@
 """ map tokens from tokenization or lexical analysis to stack calls """
 
 from execution.parser import OPERATIONS, Instruction
-from execution import CallStack, Heap
+from execution import Stack, Heap
 from custom_operator import InputReader
 
 from collections.abc import Iterator
@@ -11,12 +11,12 @@ class Evaluator:
     """ caller of funcs tokens respond to """
     def __init__(
             self, heap: Heap | None = None,
-            stack: CallStack | None = None, 
+            stack: Stack | None = None, 
             *, verbose: bool = False
         ):
         # instances
         self.heap = heap or Heap()
-        self.stack = stack or CallStack()
+        self.stack = stack or Stack()
         self.input_reader = InputReader(self.heap)
 
         self.tokens = []

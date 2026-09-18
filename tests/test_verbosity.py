@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from execution import CallStack, Evaluator
+from execution import Stack, Evaluator
 from read import get_filepath
 
 class FileLike:
@@ -13,7 +13,7 @@ class TestEvalVerbosity(TestCase):
     """ test verbose=True and verbose=False """
 
     def setUp(self):
-        self.s = CallStack()
+        self.s = Stack()
         self.ev = Evaluator(self.s, None, verbose=True)
 
     def test_output_number(self):

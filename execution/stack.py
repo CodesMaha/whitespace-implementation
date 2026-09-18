@@ -9,7 +9,7 @@ class Node:
         self.value: Any = value # top
         self.next: Node | None = None # next call
 
-class CallStack:
+class Stack:
     """ linked list for function calls """
     def __init__(self):
         self.head: Node | None = None

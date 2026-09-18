@@ -4,7 +4,7 @@
 import custom_operator as c_op
 
 # operations
-from execution import CallStack, Heap
+from execution import Stack, Heap
 from operator import add, sub, mul, mod
 
 from dataclasses import dataclass
@@ -22,12 +22,12 @@ class Instruction:
     heap_accesss: bool = False # requires heap instance
 
 OPERATIONS: dict[str, Instruction] = {
-    "push": Instruction(CallStack.push, stack_access=True, parameter_type=c_op.to_number),
-    "pop": Instruction(CallStack.pop, stack_access=True),
-    "duplicate": Instruction(CallStack.duplicate, stack_access=True),
-    "copy": Instruction(CallStack.copy, stack_access=True, parameter_type=c_op.to_number),
-    "slide": Instruction(CallStack.slide, stack_access=True, parameter_type=c_op.to_number),
-    "swap": Instruction(CallStack.swap, stack_access=True),
+    "push": Instruction(Stack.push, stack_access=True, parameter_type=c_op.to_number),
+    "pop": Instruction(Stack.pop, stack_access=True),
+    "duplicate": Instruction(Stack.duplicate, stack_access=True),
+    "copy": Instruction(Stack.copy, stack_access=True, parameter_type=c_op.to_number),
+    "slide": Instruction(Stack.slide, stack_access=True, parameter_type=c_op.to_number),
+    "swap": Instruction(Stack.swap, stack_access=True),
     "add": Instruction(add, 2, store_return=True),
     "sub": Instruction(sub, 2, store_return=True),
     "mul": Instruction(mul, 2, store_return=True),
@@ -37,7 +37,7 @@ OPERATIONS: dict[str, Instruction] = {
     "retrieve": Instruction(Heap.retrieve, 1, store_return=True, heap_accesss=True),
     "input character": Instruction(c_op.InputReader.read_character, 1, input_access=True),
     "input number": Instruction(c_op.InputReader.read_number, 1, input_access=True),
-    "output character": Instruction(CallStack.pop_one, stack_access=True, return_type=c_op.to_character),
-    "output number": Instruction(CallStack.pop_one, stack_access=True),
+    "output character": Instruction(Stack.pop_one, stack_access=True, return_type=c_op.to_character),
+    "output number": Instruction(Stack.pop_one, stack_access=True),
     "exit": Instruction()
 }

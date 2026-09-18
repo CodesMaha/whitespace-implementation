@@ -1,4 +1,4 @@
-from .stack import CallStack
+from .stack import Stack
 from .heap import Heap
 from .evaluator import Evaluator
 
