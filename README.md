@@ -8,7 +8,7 @@ For convenience, this implementation accepts these optional aliases:
 However, literal whitespace characters are also accepted directly.
 
 # Usage for `main.py`
-To finish one set of instructions, `-1` can be appended on a separate line as a sentinel value. Conversely, the program itself can be terminated by the Whitespace instruction `\n\n\n`.
+To finish one set of instructions, `-1` can be appended on a separate line as a sentinel value.
 
 ## Example
 
@@ -44,7 +44,8 @@ python read.py FILEPATH
 * Stack manipulation.
 * Arithmetic.
 * Heap access.
-* Printing.
+* Exiting.
+* Input and output.
 
 ---
 
