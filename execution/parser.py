@@ -12,14 +12,15 @@ from collections.abc import Callable
 
 @dataclass
 class Instruction:
-    operator: Callable | None = None
+    operator: Callable = lambda *_: None
     parameter_amt: int = 0 # how many stack items to pop
     parameter_type: Callable | None = None
     return_type: Callable | None = None
     store_return: bool = False # push to stack
     input_access: bool = False # requires input instance
-    stack_access: bool = False # requires stack instance
     heap_accesss: bool = False # requires heap instance
+    stack_access: bool = False # requires stack instance
+    subroutines_access: bool = False # requires subroutines instance
 
 OPERATIONS: dict[str, Instruction] = {
     "push": Instruction(Stack.push, stack_access=True, parameter_type=c_op.to_number),
@@ -39,5 +40,11 @@ OPERATIONS: dict[str, Instruction] = {
     "input number": Instruction(c_op.InputReader.read_number, 1, input_access=True),
     "output character": Instruction(Stack.pop_one, stack_access=True, return_type=c_op.to_character),
     "output number": Instruction(Stack.pop_one, stack_access=True),
+    "mark label": Instruction(parameter_type=str),
+    "call subroutine": Instruction(c_op.Subroutines.call_subroutine, parameter_type=str, subroutines_access=True),
+    "jump": Instruction(c_op.Subroutines.jump, parameter_type=str, subroutines_access=True),
+    "jump if zero": Instruction(c_op.Subroutines.jump_if_zero, parameter_amt=1, parameter_type=str, subroutines_access=True),
+    "jump if negative": Instruction(c_op.Subroutines.jump_if_negative, parameter_amt=1, parameter_type=str, subroutines_access=True),
+    "end subroutine": Instruction(c_op.Subroutines.end_subroutine, subroutines_access=True),
     "exit": Instruction()
 }

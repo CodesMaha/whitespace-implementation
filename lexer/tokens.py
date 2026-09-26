@@ -33,6 +33,12 @@ TOKENS: dict[str, dict[str, str]] = {
         " \t": "output number"
     },
     "\n": { # imp flow control
+        "  ": "mark label",
+        " \t": "call subroutine",
+        " \n": "jump",
+        "\t ": "jump if zero",
+        "\t\t": "jump if negative",
+        "\t\n": "end subroutine",
         "\n\n": "exit"
     }
 }

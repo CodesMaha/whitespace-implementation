@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
-from execution.stack import Stack
-from execution.evaluator import Evaluator
+from execution import Stack
+from execution import Evaluator
 
 class TestEvaluator(TestCase):
     """ test the evaluator that calls other functions """

@@ -18,7 +18,7 @@ def to_number(inp: str) -> int:
     res: int | str = inp.replace(" ", "0").replace("\t", "1")
     
     if len(res) < 2: # newline should be removed beforehand
-        raise NumberError # has to contain sign and one digit
+        raise NumberError(number=inp) # has to contain sign and one digit
     
     if res[0] == "1":
         res = -int(res[1:], 2)

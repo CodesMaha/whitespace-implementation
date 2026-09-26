@@ -17,8 +17,6 @@ For example, with aliases…
 $ \32\32\32\t\32\n
 -1
 pushed 2
-$ \n\n\n
--1
 ```
 and without aliases…
 ```
@@ -26,11 +24,6 @@ $
 
 -1
 pushed 2
-$
-
-
-
--1
 ```
 
 # Usage for `read.py`
@@ -39,13 +32,6 @@ Run the `read.py` file with the filepath to the source code.
 cd REPO_DIR
 python read.py FILEPATH
 ```
-
-# Features
-* Stack manipulation.
-* Arithmetic.
-* Heap access.
-* Exiting.
-* Input and output.
 
 ---
 

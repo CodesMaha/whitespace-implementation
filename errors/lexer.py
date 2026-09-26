@@ -12,7 +12,12 @@ class MissingSyntaxError(WhitespaceError):
         super().__init__(message)
 
 class NumberError(WhitespaceError):
-    def __init__(self, message="Invalid format for a number"):
+    def __init__(
+        self, message="Invalid format for a number",
+        number: str | None = None
+    ):
+        if number is not None:
+            message = f"{message}. Number tried: {number!r}"
         super().__init__(message)
 
 class CharacterError(WhitespaceError):

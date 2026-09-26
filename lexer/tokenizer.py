@@ -63,9 +63,8 @@ class Tokenizer:
             self._update_pos(len(m.group(0)))
 
             if OPERATIONS[self._get_top()].parameter_type:
-                # get until next newline
-                gvn_number = self._next().split("\n", 1)[0]
-                self._update_tokens(gvn_number) # no conversion
-                self._update_pos(len(gvn_number) + 1)
+                gvn_param = self._next().split("\n", 1)[0]
+                self._update_tokens(gvn_param) # no conversion
+                self._update_pos(len(gvn_param) + 1)
 
         return self.matched_tokens

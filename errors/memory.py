@@ -24,6 +24,17 @@ class PopZeroError(WhitespaceError):
             message = f"{message} item {idx_to_pop}"
         super().__init__(message)
 
+#   subroutine errors
+
+class LabelNotFoundError(WhitespaceError):
+    def __init__(
+        self, message="Could not find provided label",
+        label: int | None = None
+    ):
+        if label is not None:
+            message = f"{message}: {label}"
+        super().__init__(message)
+
 #   heap errors
 
 class AddressNotFoundError(WhitespaceError):
